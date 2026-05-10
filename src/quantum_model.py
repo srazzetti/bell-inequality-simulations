@@ -107,7 +107,7 @@ def chsh_quantum(a=0.0, a_p=np.pi/2, b=np.pi/4, b_p=-np.pi/4, shots=10000):
 # Here instead, each trial contributes to one of the four correlators depending
 # on the random angle choices — reproducing the actual experimental protocol.
 
-def simulate_experiment_quantum(n_trials=100000, shots_per_trial=1):
+def simulate_quantum_experiment(n_trials=100000, shots_per_trial=1):
     """
     Simulates the CHSH experiment as it would be performed in a real lab.
     For each trial, Alice and Bob independently and randomly choose their
@@ -169,7 +169,7 @@ def main () :
     # debug
     S = chsh_quantum()
     print(f'S quantum = {S:.4f}')
-    S = simulate_experiment_quantum(10000)
+    S = simulate_quantum_experiment(10000)
     print(f'S by full simulation = {S:.4}')
     return
 
