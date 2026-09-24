@@ -31,12 +31,12 @@ def main () :
 
     # statistical limit
     S_cl_limit = chsh_classical()
-    print(f"\n[Statistical limit] S = {S_cl_limit:.4f}")
+    print(f"\n[Statistical limit] |S| = {abs(S_cl_limit):.4f}")
 
     # experimental protocol simulation --> random choices for a/a' and b/b' for each trial
     print(f"\n[Sampling] Running full classical experiment simulation...")
     S_cl_exp = simulate_classical_experiment(1_000_000)
-    print(f"\n>> Final S (Classical Experiment): {S_cl_exp:.4f}")
+    print(f"\n>> Final |S| (Classical Experiment): {abs(S_cl_exp):.4f}")
 
     print(f"\n{'-'*40}")
 
@@ -47,12 +47,12 @@ def main () :
 
     # statistical limit
     S_qu_limit = chsh_quantum()
-    print(f"\n[Statistical limit] S = {S_qu_limit:.4f}")
+    print(f"\n[Statistical limit] |S| = {abs(S_qu_limit):.4f}")
 
     # experimental protocol simulation --> random choices for a/a' and b/b' for each trial
     print(f"\n[Sampling] Running full quantum experiment simulation...")
     S_qu_exp = simulate_quantum_experiment(100_000)
-    print(f"\n>> Final S (Quantum Experiment): {S_qu_exp:.4f}")
+    print(f"\n>> Final |S| (Quantum Experiment): {abs(S_qu_exp):.4f}")
 
     # --- SUMMARY ---
     print(f"\n{'#'*40}")
@@ -61,12 +61,12 @@ def main () :
     print(f"\n  Classical bound    |S| <= 2.0000")
     print(f"  Quantum bound    |S| <= {2*np.sqrt(2):.4f}  (quantum maximum)")
     print(f"\n  --- Statistical limit ---")
-    print(f"  Classical S        |S|  = {S_cl_limit:.4f}")
-    print(f"  Quantum   S        |S|  = {S_qu_limit:.4f}")
+    print(f"  Classical S        |S|  = {abs(S_cl_limit):.4f}")
+    print(f"  Quantum   S        |S|  = {abs(S_qu_limit):.4f}")
     print(f"\n  --- Experimental simulation ---")
-    print(f"  Classical S        |S|  = {S_cl_exp:.4f}")
-    print(f"  Quantum   S        |S|  = {S_qu_exp:.4f}")
-    print(f"\n  Violation of classical bound: {'YES !' if S_qu_exp > 2 else 'NO !'}")
+    print(f"  Classical S        |S|  = {abs(S_cl_exp):.4f}")
+    print(f"  Quantum   S        |S|  = {abs(S_qu_exp):.4f}")
+    print(f"\n  Violation of classical bound: {'YES !' if abs(S_qu_exp) > 2 else 'NO !'}")
     print(f"{'#'*40}\n")    
     return
 

@@ -61,7 +61,7 @@ def chsh_classical(a=0.0, ap=np.pi/2, b=np.pi/4, bp=-np.pi/4, n_samples=100000):
     E_apbp = get_E_classical(ap, bp, n_samples)
 
     # Compute the absolute value of the CHSH statistic
-    S = abs(E_ab + E_apb + E_abp - E_apbp)
+    S = E_ab + E_apb + E_abp - E_apbp
     return S
 
 # -----------------------------------------------------
@@ -117,7 +117,7 @@ def simulate_classical_experiment(n_trials=1000000, a=0.0, ap=np.pi/2, b=np.pi/4
         print(f"E(a',b)  = {E_apb:.4f}")
         print(f"E(a',b') = {E_apbp:.4f}")
 
-    S = abs(E_ab + E_apb + E_abp - E_apbp)
+    S = E_ab + E_apb + E_abp - E_apbp
     return S
 
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -129,9 +129,9 @@ def main () :
 
     # only for debugging
     S = chsh_classical()
-    print(f'S classic = {S:.4f}')
+    print(f'|S| classic = {abs(S):.4f}')
     S = simulate_classical_experiment(n_trials=10000, print_corr=False)
-    print(f'S by full simulation = {S:.4}')
+    print(f'|S| by full simulation = {abs(S):.4}')
     return
 
 # ----------------------------------------------------------------------------------------------------------------------------

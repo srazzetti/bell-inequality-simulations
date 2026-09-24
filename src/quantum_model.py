@@ -92,7 +92,7 @@ def chsh_quantum(a=0.0, ap=np.pi/2, b=np.pi/4, bp=-np.pi/4, shots=10000):
     E_apbp = get_E_quantum(ap, bp, shots)
 
     # Compute the absolute value of the CHSH statistic
-    S = abs(E_ab + E_apb + E_abp - E_apbp)
+    S = E_ab + E_apb + E_abp - E_apbp
     return S
 
 # -----------------------------------------------------
@@ -152,7 +152,7 @@ def simulate_quantum_experiment(n_trials=100000, shots_per_trial=1,
         print(f"E(a',b)  = {E_apb:.4f}")
         print(f"E(a',b') = {E_apbp:.4f}")
 
-    S = abs(E_ab + E_apb + E_abp - E_apbp)
+    S = E_ab + E_apb + E_abp - E_apbp
     return S
 
 
@@ -165,9 +165,9 @@ def main () :
 
     # debug
     S = chsh_quantum()
-    print(f'S quantum = {S:.4f}')
+    print(f'|S| quantum = {abs(S):.4f}')
     S = simulate_quantum_experiment(10000)
-    print(f'S by full simulation = {S:.4}')
+    print(f'|S| by full simulation = {abs(S):.4}')
     return
 
 # ----------------------------------------------------------------------------------------------------------------------------
