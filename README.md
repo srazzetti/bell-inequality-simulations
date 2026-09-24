@@ -2,10 +2,10 @@
 
 Classical and quantum simulations of CHSH Bell inequalities using local hidden variable models and Qiskit.
 
-> ⚠️ Work in progress — first personal GitHub repository.
+> Work in progress — first personal GitHub repository.
 
 
-## 📌 Overview
+## Overview
 
 This project explores the CHSH version of **Bell inequalities** through computational simulations.
 
@@ -16,25 +16,16 @@ It includes:
 - numerical experiments  
 - visualizations of the CHSH parameter \(S\)
 
-## 🎯 Goals
+## Goals
 
 Current objectives of the project:
 
-- implement different classical hidden-variable models  
 - simulate quantum correlations  
 - compare classical vs quantum results  
 - visualize the CHSH inequality \(S\) as a function of measurement angles  
-- explore conditions for Bell inequality violations  
+- explore conditions for Bell inequality violations (?)  
 
-## 🧪 Technologies
-
-- Python  
-- NumPy  
-- Matplotlib  
-- Qiskit  
-- Jupyter Notebook  
-
-## 📚 Purpose
+##  Purpose
 
 This repository is a learning project focused on:
 
