@@ -18,27 +18,25 @@ from tqdm import tqdm
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # --- Quantum Implementation ---
-# We simulate the CHSH experiment using a two-qubit quantum circuit.
-# The singlet state is prepared and measurements are performed along 
-# arbitrary directions via basis rotations before measurement.
-# The quantum correlator for the singlet state is E(a,b) = -cos(a-b),
-# which violates the classical bound |S| <= 2, reaching S = 2.828
+# We simulate the CHSH experiment using a two-qubit quantum circuit.The singlet state 
+# is prepared and measurements are performed along arbitrary directions via basis 
+# rotations before measurement. The quantum correlator for the singlet state 
+# is E(a,b) = -cos(a-b), which violates the classical bound |S| <= 2, reaching S = 2.828
 # for the optimal angle settings (CHSH, 1969).
 
 simulator = AerSimulator()
 
 def create_bell_circuit(theta_a : float, theta_b : float):
     """
-    Prepares the singlet state and performs projective measurements along 
-    directions theta_a (Alice, qubit 0) and theta_b (Bob, qubit 1).
-
-    Measurement along axis theta is implemented by rotating the state
-    by -theta (ry(-theta)) before measuring in the computational Z basis.
-    This is equivalent to rotating the measurement axis by +theta, since
-    only the relative orientation between state and axis matters.
+    Prepares the singlet state |Ψ-⟩ = (|01⟩ - |10⟩)/√2 and performs projective 
+    measurements along directions theta_a (Alice, qubit 0) and theta_b (Bob, qubit 1).
+    
+    Measurement along axis theta is implemented by rotating the state by -theta (ry(-theta)) 
+    before measuring in the computational Z basis. This is equivalent to rotating the 
+    measurement axis by +theta, since only the relative orientation between state and axis matters.
     """
     qc = QuantumCircuit(2, 2)
-    # Bell state
+    # Bell singlet state
     qc.h(0)
     qc.cx(0, 1)
     qc.x(1)
@@ -79,19 +77,19 @@ def get_E_quantum(theta_a, theta_b, shots=10000):
     return correlation(counts, shots)
 
 
-def chsh_quantum(a=0.0, a_p=np.pi/2, b=np.pi/4, b_p=-np.pi/4, shots=10000):
+def chsh_quantum(a=0.0, ap=np.pi/2, b=np.pi/4, bp=-np.pi/4, shots=10000):
     """
-    Calculates the CHSH S value using quantum simulation. 
-    Default angles are chosen to maximize quantum violation.
-    The CHSH parameter is defined as (see derivation from C = (A+A')B + (A-A')B'):
+    Calculates the CHSH S value using quantum simulation. Default angles are 
+    chosen to maximize quantum violation. The CHSH parameter is 
+    defined as (see derivation from C = (A+A')B + (A-A')B'):
         S = E(a,b) + E(a',b) + E(a,b') - E(a',b')
-    Quantum mechanics predicts |S| = 2.828, violating the classical
-    bound |S| <= 2 (Bell, 1964; CHSH, 1969).
+    Quantum mechanics predicts |S| = 2.828, violating the classical bound 
+        |S| <= 2 (Bell, 1964; CHSH, 1969).
     """
     E_ab   = get_E_quantum(a, b, shots)
-    E_apb  = get_E_quantum(a_p, b, shots)
-    E_abp  = get_E_quantum(a, b_p, shots)
-    E_apbp = get_E_quantum(a_p, b_p, shots)
+    E_apb  = get_E_quantum(ap, b, shots)
+    E_abp  = get_E_quantum(a, bp, shots)
+    E_apbp = get_E_quantum(ap, bp, shots)
 
     # Compute the absolute value of the CHSH statistic
     S = abs(E_ab + E_apb + E_abp - E_apbp)
@@ -101,22 +99,20 @@ def chsh_quantum(a=0.0, a_p=np.pi/2, b=np.pi/4, b_p=-np.pi/4, shots=10000):
 # The following function simulates the CHSH experiment as it would be performed
 # in a real laboratory setting, where Alice and Bob independently and randomly
 # choose their measurement directions for each trial.
-#
 # This is conceptually different from chsh_quantum(), which directly computes 
 # each correlator E(a,b) in the statistical limit (infinite trials, fixed angles).
 # Here instead, each trial contributes to one of the four correlators depending
-# on the random angle choices — reproducing the actual experimental protocol.
+# on the random angle choices - reproducing the actual experimental protocol.
 
-def simulate_quantum_experiment(n_trials=100000, shots_per_trial=1):
+def simulate_quantum_experiment(n_trials=100000, shots_per_trial=1,
+                                a=0.0, ap=np.pi/2, b=np.pi/4, bp=-np.pi/4,
+                                print_corr=True):
     """
     Simulates the CHSH experiment as it would be performed in a real lab.
     For each trial, Alice and Bob independently and randomly choose their
     measurement angle. This is statistically equivalent to computing E(a,b) 
     directly, but faithfully reproduces the experimental protocol.
     """
-    a, ap = 0, np.pi/2
-    b, bp = np.pi/4, -np.pi/4
-
     sums   = {'a_b': 0, 'a_bp': 0, 'ap_b': 0, 'ap_bp': 0}
     counts = {'a_b': 0, 'a_bp': 0, 'ap_b': 0, 'ap_bp': 0}
 
@@ -150,10 +146,11 @@ def simulate_quantum_experiment(n_trials=100000, shots_per_trial=1):
     E_apb  = sums['ap_b']  / counts['ap_b']
     E_apbp = sums['ap_bp'] / counts['ap_bp']
 
-    print(f"E(a,b)   = {E_ab:.4f}")
-    print(f"E(a,b')  = {E_abp:.4f}")
-    print(f"E(a',b)  = {E_apb:.4f}")
-    print(f"E(a',b') = {E_apbp:.4f}")
+    if print_corr:
+        print(f"E(a,b)   = {E_ab:.4f}")
+        print(f"E(a,b')  = {E_abp:.4f}")
+        print(f"E(a',b)  = {E_apb:.4f}")
+        print(f"E(a',b') = {E_apbp:.4f}")
 
     S = abs(E_ab + E_apb + E_abp - E_apbp)
     return S
